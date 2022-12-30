@@ -1,0 +1,102 @@
+.container-prin{
+    height: 100vh;
+    width: 100%;
+    padding: 15px;
+    background: whitesmoke;
+}
+
+.container-tbl{
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.container-title{
+    background-color: #fff;
+    height: 10vh;
+    width: 100%;
+}
+
+.vCenter{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.animated-text{
+    color: black;
+    background-image:linear-gradient(90deg,#003d5b,#30638e,#00798c,#d1495b,#edae49);
+    background-size: 300%,300%;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    animation: color 12s ease-in-out infinite;
+    text-align: center;
+}
+
+.btn{
+    margin:12px 0px;
+}
+
+.btn-light:hover{
+    --border-size: 2px;
+    --border-angle: 0turn;
+    background-image: conic-gradient(
+        from var(--border-angle),
+        #fff,
+        #fff 50%,
+        #fff, #fff
+      ),
+      conic-gradient(from var(--border-angle), transparent 75%, #003d5b,#30638e,#00798c,#d1495b,#edae49);
+    background-size: calc(100% - (var(--border-size) * 2))
+        calc(100% - (var(--border-size) * 2)),
+      cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  
+    animation: bg-spin 3s linear infinite;
+}
+
+@keyframes bg-spin {
+    to {
+      --border-angle: 1turn;
+    }
+  }
+  
+  @property --border-angle {
+    syntax: "<angle>";
+    inherits: true;
+    initial-value: 0turn;
+  }
+  
+
+.btn-light:hover .CustomLink{
+    color: white;
+    font-weight: 600;
+    background-image:linear-gradient(90deg,#003d5b,#30638e,#00798c,#d1495b,#edae49);
+    background-size: 300%,300%;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    animation: color 3s ease-in-out infinite;
+    text-decoration: none;
+}
+@keyframes color{
+    0%{
+        background-position: 0 50%;
+    }
+    50%{
+        background-position: 100%, 50%;
+    }
+    100%{
+        background-position: 0 50%;
+    }
+}
+
+.table td{
+    text-align: justify;
+    vertical-align: middle!important;
+}
+
+a .btn-outline-warning:hover{
+    color: white;
+}

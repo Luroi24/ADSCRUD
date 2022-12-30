@@ -1,0 +1,25 @@
+.MarginContainer {
+    margin-top: 24px;
+}
+
+.AlignCenter {
+    text-align: center;
+    display: flex;
+    margin: auto;
+    justify-content: center;
+}
+
+.CustomLink {
+    color:#2b2d42;
+    text-decoration: none;
+}
+
+.M-6 {
+    margin:6px;
+}
+
+.ImageContainer {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+}
