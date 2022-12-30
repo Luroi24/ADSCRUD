@@ -15,7 +15,7 @@ const Pregunta = ({ id,RGB}) => {
             window.location.href = "/Crud/";
         });
     }
-        
+    
     return (
         <tr>
             <td>{RGB}</td>

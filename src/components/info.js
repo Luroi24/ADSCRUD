@@ -14,22 +14,16 @@ class Info extends React.Component {
     }
 
     componentDidMount() {
-        
         const qId = new URLSearchParams(window.location.search).get("id");
-        if (qId) {
-            console.log(qId);
-            axios.get("http://localhost:8080/Crud/Mostrar?id="+qId).then
-            
-            (response => {
-                const question = response.data[0];
-                console.log(response.data[0]);
-                this.setState({ ...question });
-
-            }).catch(error => {
-                console.info(error);
-                alert("Ha ocurrido un error");
-            });
-        }
+        console.log(qId);
+        axios.post(`http://localhost:8080/Crud/Mostrar?id=${qId}`).then(response => {
+	        const question = response.data[0];                
+ 	        console.info(response.data);
+	        this.setState({ ...question });
+              }).catch(error => {
+            console.info(error);
+            alert(response.data.message);
+             });
     }
 
     render() {
