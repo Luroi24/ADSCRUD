@@ -12,10 +12,12 @@ class Home extends React.Component {
         showAlert: false,
         alertText: ""
     }
-
+    
     componentDidMount() {
-        axios.get("http://localhost:8080/Crud_React/Preguntas").then(response => {
+        axios.get("http://localhost:8080/Crud/Preguntas").then(response => {
             this.setState({ data: response.data });
+            console.log(response.data);
+            console.log(this.state.data);
         }).catch(error => {
             console.info(error);
             this.setState({ showAlert: true, alertText: "ERROR EN LA OBTENCION DE DATOS" });
@@ -42,7 +44,7 @@ class Home extends React.Component {
                             : null
                     }
                     <Button variant="light">
-                        <Link to="/Crud_React/formulario" className="CustomLink">Añadir nuevo color</Link>
+                        <Link to="/Crud/formulario" className="CustomLink">Añadir nuevo color</Link>
                     </Button>
                     <Table striped bordered>
                         <thead className="thead-dark">

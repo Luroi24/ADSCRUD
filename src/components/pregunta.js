@@ -3,34 +3,29 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-const Pregunta = ({ id, pregunta }) => {
+const Pregunta = ({ id,RGB}) => {
     const handleClickEliminar = (event) => {
         //Eliminar
-        axios.post(`http://localhost:8080/Crud_React/Eliminar?id=${id}`).then(response => {
+        axios.post(`http://localhost:8080/Crud/Eliminar?id=${id}`).then(response => {
             console.info(response.data);
-            if (response.data.message) {
-                alert(response.data.message);
-            } else {
-                alert(response.data.error);
-            }
         }).catch(error => {
             console.info(error);
             alert(response.data.message);
         }).finally(() => {
-            window.location.href = "/Crud_React/";
+            window.location.href = "/Crud/";
         });
     }
-
+        
     return (
         <tr>
-            <td>{pregunta}</td>
+            <td>{RGB}</td>
             <td className="AlignCenter">
-                <Link to={`/Crud_React/info?id=${id}`}>
+                <Link to={`/Crud/info?id=${id}`}>
                     <Button
                     variant="outline-success"
                     className="M-6">Ver color</Button>
                 </Link>
-                <Link to={`/Crud_React/formulario?id=${id}`}>
+                <Link to={`/Crud/formulario?id=${id}`}>
                     <Button
                     variant="outline-warning"
                     className="M-6">Editar color</Button>
@@ -41,7 +36,7 @@ const Pregunta = ({ id, pregunta }) => {
                     onClick={handleClickEliminar}>
                     Eliminar color
                 </Button>
-                <Link to={`/Crud_React/formulario?id=${id}`}>
+                <Link to={`/Crud/formulario?id=${id}`}>
                     <Button
                     variant="outline-info"
                     className="M-6">
