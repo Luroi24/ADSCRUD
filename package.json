@@ -12,6 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.11.2",
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
     "node-modules": "^1.0.1",

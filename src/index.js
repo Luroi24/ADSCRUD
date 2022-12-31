@@ -19,7 +19,7 @@ const App = () => {
                 <Route exact path="/Crud/info">
                     <Info />
                 </Route>
-                <Route exact path="/Crud/formulario">
+                <Route exact path="*">
                     <Formulario />
                 </Route>
                 <Route path="*" render={() => <h1>Recurso no encontrado</h1>} />
