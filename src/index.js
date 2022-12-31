@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "./styles/styles.css"
 import Info from "./components/info";
 import Formulario from "./components/formulario";
-
+import Update from "./components/update";
 const App = () => {
     return (
         <div>
@@ -21,6 +21,9 @@ const App = () => {
                 </Route>
                 <Route exact path="*">
                     <Formulario />
+                </Route>
+                <Route exact path="/Crud/update">
+                    <Update />
                 </Route>
                 <Route path="*" render={() => <h1>Recurso no encontrado</h1>} />
             </Switch>
