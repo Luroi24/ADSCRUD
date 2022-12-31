@@ -8,6 +8,7 @@ const Pregunta = ({ id,RGB}) => {
         //Eliminar
         axios.post(`http://localhost:8080/Crud/Eliminar?id=${id}`).then(response => {
             console.info(response.data);
+            alert("Se elimino con exito");
         }).catch(error => {
             console.info(error);
             alert(response.data.message);
@@ -25,7 +26,7 @@ const Pregunta = ({ id,RGB}) => {
                     variant="outline-success"
                     className="M-6">Ver color</Button>
                 </Link>
-                <Link to={`/Crud/formulario?id=${id}`}>
+                <Link to={`/Crud/Update?id=${id}`}>
                     <Button
                     variant="outline-warning"
                     className="M-6">Editar color</Button>

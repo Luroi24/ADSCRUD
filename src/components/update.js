@@ -4,22 +4,38 @@ import { Button, Container } from "react-bootstrap";
 
 
 
-class Formulario extends React.Component {
-    state={
-        val:0
-
+class Update extends React.Component {
+    state = {
+        id: "",
+        RGB: "",
+        R: "",
+        G: "",
+        B: "",
+        PREDICTION: ""
     }
+
+    componentDidMount() {
+        const qId = new URLSearchParams(window.location.search).get("id");
+        console.log(qId);
+        axios.post(`http://localhost:8080/Crud/Mostrar?id=${qId}`).then(response => {
+	        const question = response.data[0];                
+ 	        console.info(response.data);
+	        this.setState({ ...question });
+              }).catch(error => {
+            console.info(error);
+            alert(response.data.message);
+             });
+    }
+
         validar=(id,RGB,R,G,B,Pred) =>{
-            axios.post(`http://localhost:8080/Crud/Create?id=${id}&RGB=${RGB}&R=${R}&G=${G}&B=${B}&Pred=${Pred}`).then(response => {
+            axios.post(`http://localhost:8080/Crud/Update?id=${id}&RGB=${RGB}&R=${R}&G=${G}&B=${B}&Pred=${Pred}`).then(response => {
                 console.info(response.data);
                 console.log("Entro"+response);
-                alert("Creado con exito");
-            }).finally(() => {
-                window.location.href = "/Crud/";
+                alert("Se Actualizo con exito");
             });
         }
     render() {
-        
+         const { id,RGB,R,G,B,Pred } = this.state;
         return(
             <Container className="MarginContainer">
             <h1>CREA TU EJEMPLO</h1>
@@ -28,27 +44,27 @@ class Formulario extends React.Component {
                 <label>
                     id:
                 </label>
-                <input type="int" name="idc" id="id"/>
+                <input type="number" name="idc" id="id" value={id}/>
                 <label>
                     Descripción:
                 </label>
-                <input type="text" name="RGB" id="RGB"/>
+                <input type="text" name="RGB" id="RGB" defaultValue={RGB}/>
                 <label>
                     R:
                 </label>
-                <input type="int" name="R" id="R"/>
+                <input type="number" name="R" id="R" defaultValue={R}/>
                 <label>
                     G:
                 </label>
-                <input type="int" name="G" id="G"/>
+                <input type="number" name="G" id="G" defaultValue={G}/>
                 <label>
                     B:
                 </label>
-                <input type="int" name="B" id="B"/>
+                <input type="nummber" name="B" id="B" defaultValue={B}/>
                 <label>
                     Predicción:
                 </label>
-                <input type="text" name="Pred" id="Pred"/>
+                <input type="text" name="Pred" id="Pred" defaultValue={Pred}/>
             </form>
             
             </Container>
@@ -68,4 +84,4 @@ class Formulario extends React.Component {
     }
 }
 
-export default Formulario;
+export default Update;
