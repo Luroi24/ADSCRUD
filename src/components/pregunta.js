@@ -3,10 +3,18 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-const Pregunta = ({ id,RGB}) => {
-    const handleClickEliminar = (event) => {
+class Pregunta extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            id: this.props.id,
+            RGB: this.props.RGB
+        }
+    }
+
+    handleClickEliminar = (event) => {
         //Eliminar
-        axios.post(`http://localhost:8080/Crud/Eliminar?id=${id}`).then(response => {
+        axios.post(`http://localhost:8080/Crud/Eliminar?id=${this.state.id}`).then(response => {
             console.info(response.data);
             alert("Se elimino con exito");
         }).catch(error => {
@@ -16,9 +24,11 @@ const Pregunta = ({ id,RGB}) => {
             window.location.href = "/Crud/";
         });
     }
-    
-    return (
-        <tr>
+
+    render(){
+        const {id,RGB} = this.state;
+        return(
+            <tr>
             <td>{RGB}</td>
             <td className="AlignCenter">
                 <Link to={`/Crud/info?id=${id}`}>
@@ -34,7 +44,7 @@ const Pregunta = ({ id,RGB}) => {
                 <Button
                     variant="outline-danger"
                     className="M-6"
-                    onClick={handleClickEliminar}>
+                    onClick={this.handleClickEliminar}>
                     Eliminar color
                 </Button>
                 <Link to={`/Crud/formulario?id=${id}`}>
@@ -46,6 +56,8 @@ const Pregunta = ({ id,RGB}) => {
                 </Link>
             </td>
         </tr>
-    )
+        )
+    }
 }
+
 export default Pregunta;

@@ -10,7 +10,8 @@ class Home extends React.Component {
     state = {
         data: [],
         showAlert: false,
-        alertText: ""
+        alertText: "",
+        name:""
     }
     
     componentDidMount() {
@@ -24,6 +25,9 @@ class Home extends React.Component {
         })
     }
  
+    handleCallback = (childData) =>{
+        this.setState({name: childData})
+    }
 
     render() {
         const { data, showAlert, alertText } = this.state;
