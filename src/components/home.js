@@ -24,10 +24,6 @@ class Home extends React.Component {
             this.setState({ showAlert: true, alertText: "ERROR EN LA OBTENCION DE DATOS" });
         })
     }
- 
-    handleCallback = (childData) =>{
-        this.setState({name: childData})
-    }
 
     render() {
         const { data, showAlert, alertText } = this.state;
