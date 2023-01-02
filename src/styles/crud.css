@@ -35,7 +35,7 @@
 }
 
 .btn{
-    margin:12px 0px;
+    margin:12px 6px 12px 0px;
 }
 
 .btn-light:hover{
@@ -53,7 +53,6 @@
       cover;
     background-position: center center;
     background-repeat: no-repeat;
-  
     animation: bg-spin 3s linear infinite;
 }
 

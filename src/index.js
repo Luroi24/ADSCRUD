@@ -1,8 +1,5 @@
 import React from "react";
-import {
-    Switch,
-    Route,
-} from "react-router-dom";
+import {Switch, Route} from "react-router-dom";
 import Home from "./components/home";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./styles/styles.css"
@@ -19,7 +16,7 @@ const App = () => {
                 <Route exact path="/Crud/info">
                     <Info />
                 </Route>
-                <Route exact path="*">
+                <Route exact path="/Crud/formulario">
                     <Formulario />
                 </Route>
                 <Route exact path="/Crud/update">

@@ -43,9 +43,11 @@ class Home extends React.Component {
                             </Alert>
                             : null
                     }
-                    <Button variant="light">
-                        <Link to="/Crud/formulario" className="CustomLink">Añadir nuevo color</Link>
-                    </Button>
+                    <Link to="/Crud/formulario">
+                        <Button variant="light">
+                            <div className="CustomLink">Añadir nuevo color</div>
+                        </Button>
+                    </Link>
                     <Table striped bordered>
                         <thead className="thead-dark">
                             <tr>

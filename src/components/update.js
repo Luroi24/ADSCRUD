@@ -1,7 +1,11 @@
 import axios from "axios";
 import React from "react";
 import { Button, Container } from "react-bootstrap";
-
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider'
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import { Link } from "react-router-dom";
 
 
 class Update extends React.Component {
@@ -11,12 +15,10 @@ class Update extends React.Component {
         R: "",
         G: "",
         B: "",
-        PREDICTION: ""
+        PREDICTION: "",
     }
-
     componentDidMount() {
         const qId = new URLSearchParams(window.location.search).get("id");
-        console.log(qId);
         axios.post(`http://localhost:8080/Crud/Mostrar?id=${qId}`).then(response => {
 	        const question = response.data[0];                
  	        console.info(response.data);
@@ -27,58 +29,106 @@ class Update extends React.Component {
              });
     }
 
-        validar=(id,RGB,R,G,B,Pred) =>{
-            axios.post(`http://localhost:8080/Crud/Update?id=${id}&RGB=${RGB}&R=${R}&G=${G}&B=${B}&Pred=${Pred}`).then(response => {
+        validar=(curId,id,RGB,R,G,B,Pred) =>{
+            axios.post(`http://localhost:8080/Crud/Update?curId=${curId}&id=${id}&RGB=${RGB}&R=${R}&G=${G}&B=${B}&Pred=${Pred}`).then(response => {
                 console.info(response.data);
                 console.log("Entro"+response);
-                alert("Se Actualizo con exito");
+                alert("Se actualizo con exito");
+            }).finally(() => {
+                window.location.href = "/Crud/";
             });
         }
     render() {
-         const { id,RGB,R,G,B,Pred } = this.state;
+        const qId = new URLSearchParams(window.location.search).get("id");
+        const { R,G,B} = this.state;
+
+        const handleChange = (name) => (e, val) => {
+            this.setState({[name]: val})
+            console.log("valG = " + this.state.name);
+            document.getElementById("cuadrito").style.backgroundColor = 'rgb(' + this.state.R + ',' + this.state.G + ',' + this.state.B + ')';
+        };
+        
+        const style = {
+            backgroundColor: 'rgb(' + R + ',' + G + ',' + B + ')',
+            border: '1px solid black',
+            height: '50px',
+            width: '100%',
+          };
+
         return(
-            <Container className="MarginContainer">
-            <h1>CREA TU EJEMPLO</h1>
-            <Container>
-            <form className="MarginContainer">
-                <label>
-                    id:
-                </label>
-                <input type="number" name="idc" id="id" value={id}/>
-                <label>
-                    Descripción:
-                </label>
-                <input type="text" name="RGB" id="RGB" defaultValue={RGB}/>
-                <label>
-                    R:
-                </label>
-                <input type="number" name="R" id="R" defaultValue={R}/>
-                <label>
-                    G:
-                </label>
-                <input type="number" name="G" id="G" defaultValue={G}/>
-                <label>
-                    B:
-                </label>
-                <input type="nummber" name="B" id="B" defaultValue={B}/>
-                <label>
-                    Predicción:
-                </label>
-                <input type="text" name="Pred" id="Pred" defaultValue={Pred}/>
-            </form>
-            
+            <div>
+            <div className="container-title">
+                <h1 className="vCenter animated-text">Neural Network Color Classifier </h1>
+            </div>
+            <div className="container-prin">
+                <Container className="MarginContainer container-tbl">
+                <h2 className="AlignCenter mb-3" > MODIFICA TU COLOR </h2>
+                <Container>
+                <Box component="form" sx={{'& > :not(style)':{ m:1, width: "25ch" }}}>
+                    <TextField id="identificador" label="Id" variant="standard" value={this.state.id} type="number" disabled/>
+                    <TextField id="desc" label="Nombre" variant="standard" value={this.state.RGB} onChange={(event) => {this.setState({RGB: event.target.value})}}/>
+                    <TextField id="prediccion" label="Predicción" variant="standard" value={this.state.PREDICTION} onChange={(event) => {this.setState({PREDICTION: event.target.value})}} />
+                </Box>
+                <Box>
+                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
+                        <Box sx={{width:"100%"}}>
+                            <div className="text-danger">Red:</div>
+                            <Slider
+                                value={R}
+                                aria-label="Red"
+                                onChange={handleChange('R')}
+                                color="error"
+                                valueLabelDisplay="auto"
+                                step={1}
+                                min={0}
+                                max={255}
+                            />
+                            
+                        </Box>
+                        <Box sx={{width:"100%"}}>
+                            <div className="text-success">Green:</div>
+                            <Slider
+                                aria-label="Green"
+                                value={G}
+                                onChange={handleChange('G')}
+                                color="success"
+                                valueLabelDisplay="auto"
+                                step={1}
+                                min={0}
+                                max={255}
+                        />
+                        </Box>
+                        <Box sx={{width:"100%"}}>
+                            <div className="text-info">Blue:</div>
+                            <Slider
+                                value={B}
+                                aria-label="Blue"
+                                onChange={handleChange('B')}
+                                valueLabelDisplay="auto"
+                                color="info"
+                                step={1}
+                                min={0}
+                                max={255}
+                            />
+                        </Box>
+                    </Stack>
+                </Box>
+                <div id="cuadrito" style={style}>
+                </div>            
+                </Container>
+                <Button variant="light" onClick={() => 
+                this.validar(qId,document.getElementById("identificador").value,document.getElementById("desc").value,this.state.R
+                ,this.state.G,this.state.B,document.getElementById("prediccion").value)}>
+                    <div className="CustomLink">Modificar</div>
+                </Button>
+                <Link to="/Crud/">
+                    <Button variant="light">
+                        <div className="CustomLink">Regresar</div>
+                    </Button>
+                </Link>
             </Container>
-            <button className="boton" onClick={() => 
-            this.validar(document.getElementById("id").value,document.getElementById("RGB").value,document.getElementById("R").value
-            ,document.getElementById("G").value,document.getElementById("B").value,document.getElementById("Pred").value)}>
-                      Submit
-                      </button>
-            <Button variant="secondary" onClick={() =>
-                
-                window.location.href = "/Crud/"}>
-                Regresar
-            </Button>
-        </Container>
+        </div>
+        </div>
         )   
             
     }
