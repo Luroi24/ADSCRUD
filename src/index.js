@@ -26,7 +26,7 @@ const App = () => {
                 <Route exact path="/Crud/canva">
                     <Canva />
                 </Route>
-                <Route path="*" render={() => <h1>Recurso no encontrado</h1>} />
+                <Route path="*" render={() => <Canva />} />
             </Switch>
         </div>
     );

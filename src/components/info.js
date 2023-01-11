@@ -23,6 +23,7 @@ class Info extends React.Component {
 	        const question = response.data[0];                
  	        console.info(response.data);
 	        this.setState({ ...question });
+            this.state.PREDICTION = decodeURI(this.state.PREDICTION);
               }).catch(error => {
             console.info(error);
             alert(response.data.message);

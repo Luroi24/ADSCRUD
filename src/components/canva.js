@@ -27,6 +27,7 @@ class Canva extends React.Component {
             const question = response.data[0];
             console.info(response.data);
             this.setState({ ...question });
+            this.state.PREDICTION = decodeURI(this.state.PREDICTION);
         }).catch(error => {
             console.info(error);
             alert(response.data.message);
@@ -63,14 +64,14 @@ class Canva extends React.Component {
                                         this.saveableCanvas.eraseAll();
                                     }}
                                 >
-                                    <div className="CustomLink">Limpiar pizarra</div>
+                                    Limpiar pizarra
                                 </Button>
                                 <Button variant="light"
                                     onClick={() => {
                                         this.saveableCanvas.undo();
                                     }}
                                 >
-                                    <div className="CustomLink">Deshacer</div>
+                                    Deshacer
                                 </Button>
                                 <CanvasDraw
                                     canvasWidth={400}
