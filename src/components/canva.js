@@ -81,7 +81,7 @@ class Canva extends React.Component {
                                 />
                             </Box>
                         </Stack>
-                        <Link to="/Crud/">
+                        <Link to="/Crud/home">
                             <Button variant="light">
                                 <div className="CustomLink">Regresar</div>
                             </Button>

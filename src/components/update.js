@@ -211,7 +211,7 @@ class Update extends React.Component {
                             disabled={(this.state.disabled)? "disabled" : ""}>
                             <div className="CustomLink">Modificar</div>
                         </Button>
-                        <Link to="/Crud/">
+                        <Link to="/Crud/home">
                             <Button variant="light">
                                 <div className="CustomLink">Regresar</div>
                             </Button>

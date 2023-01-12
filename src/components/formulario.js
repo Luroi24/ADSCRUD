@@ -8,7 +8,7 @@ import Stack from '@mui/material/Stack';
 import { Link } from "react-router-dom";
 import * as ml5 from "ml5";
 import data from '../dataset/colorData.json';
-
+import Home from "./home"
 let nn;
 const options = {
     task: 'classification',
@@ -190,7 +190,7 @@ class Formulario extends React.Component {
                                 , this.state.valG, this.state.valB, this.state.prediccion)} disabled={(this.state.disabled)? "disabled" : ""}>
                             <div className="CustomLink">Añadir</div>
                         </Button>
-                        <Link to="/Crud/">
+                        <Link to="/Crud/home">
                             <Button variant="light">
                                 <div className="CustomLink">Regresar</div>
                             </Button>

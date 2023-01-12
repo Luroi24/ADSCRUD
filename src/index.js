@@ -7,13 +7,15 @@ import Info from "./components/info";
 import Formulario from "./components/formulario";
 import Update from "./components/update";
 import Canva from "./components/canva";
+import Login from "./components/login"
 const App = () => {
     return (
         <div>
             <Switch>
-                <Route exact path="/Crud/">
-                    <Home />
-                </Route>
+                <Route exact path="/Crud/"  >
+                    <Login />
+                </Route>    
+               
                 <Route exact path="/Crud/info">
                     <Info />
                 </Route>
@@ -26,7 +28,10 @@ const App = () => {
                 <Route exact path="/Crud/canva">
                     <Canva />
                 </Route>
-                <Route path="*" render={() => <Canva />} />
+                <Route exact path="/Crud/home">
+                    <Home />
+                </Route>
+                <Route path="*" render={() => <Canva/>} />
             </Switch>
         </div>
     );

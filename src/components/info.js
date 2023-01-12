@@ -59,7 +59,7 @@ class Info extends React.Component {
                         <div id="cuadrito" style={style}> </div>
                     </Box>
                 </Stack>
-                    <Link to="/Crud/">
+                    <Link to="/Crud/home">
                         <Button variant="light">
                             <div className="CustomLink">Regresar</div>
                         </Button>
