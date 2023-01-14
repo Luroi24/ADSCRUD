@@ -8,6 +8,7 @@ import Formulario from "./components/formulario";
 import Update from "./components/update";
 import Canva from "./components/canva";
 import Login from "./components/login"
+import Eliminar from "./components/Eliminar";
 const App = () => {
     return (
         <div>
@@ -27,6 +28,9 @@ const App = () => {
                 </Route>
                 <Route exact path="/Crud/canva">
                     <Canva />
+                </Route>
+                <Route exact path="/Crud/eliminar">
+                    <Eliminar />
                 </Route>
                 <Route exact path="/Crud/home">
                     <Home />

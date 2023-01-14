@@ -1,10 +1,12 @@
 import React from "react";
 import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link ,withRouter} from "react-router-dom";
+
+
 
 class Pregunta extends React.Component {
     constructor(props) {
+
         super(props);
         this.state = {
             id: this.props.id,
@@ -12,20 +14,9 @@ class Pregunta extends React.Component {
         }
     }
 
-    handleClickEliminar = (event) => {
-        //Eliminar
-        axios.post(`http://localhost:8080/Crud/Eliminar?id=${this.state.id}`).then(response => {
-            console.info(response.data);
-            alert("Se elimino con exito");
-        }).catch(error => {
-            console.info(error);
-            alert(response.data.message);
-        }).finally(() => {
-            window.location.href = "/Crud/";
-        });
-    }
 
     render() {
+        
         const { id, RGB } = this.state;
         return (
             <tr>
@@ -41,12 +32,11 @@ class Pregunta extends React.Component {
                             variant="outline-warning"
                             className="M-6">Editar color</Button>
                     </Link>
-                    <Button
-                        variant="outline-danger"
-                        className="M-6"
-                        onClick={this.handleClickEliminar}>
-                        Eliminar color
-                    </Button>
+                    <Link to={`/Crud/Eliminar?id=${id}`}>
+                        <Button
+                            variant="outline-danger"
+                            className="M-6">Eliminar color</Button>
+                    </Link>
                     <Link to={`/Crud/canva?id=${id}`}>
                         <Button
                             variant="outline-info"
@@ -60,4 +50,4 @@ class Pregunta extends React.Component {
     }
 }
 
-export default Pregunta;
+export default withRouter(Pregunta);

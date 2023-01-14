@@ -5,7 +5,7 @@ import axios from "axios";
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 
-class Info extends React.Component {
+class Eliminar extends React.Component {
 
     state = {
         id: "",
@@ -30,6 +30,21 @@ class Info extends React.Component {
              });
     }
 
+    handleClickEliminar = () => {
+        //Eliminar
+        const uId = new URLSearchParams(window.location.search).get("id");
+        console.log(uId);
+        axios.post(`http://localhost:8080/Crud/Eliminar?id=${uId}`).then(response => {
+            console.info(response.data);
+            alert("Se elimino con exito");
+        }).catch(error => {
+            console.info(error);
+            alert(response.data.message);
+        }).finally(() => {
+            this.props.history.push('/Crud/home');
+        });
+    }
+
     render() {
         const { RGB,R,G,B,PREDICTION } = this.state;
         const style = {
@@ -46,7 +61,7 @@ class Info extends React.Component {
             </div>
             <div className="container-prin">
                 <Container className="MarginContainer container-tbl">
-                <h2 className="AlignCenter mb-3" > INFORMACIÓN DEL COLOR </h2>
+                <h2 className="AlignCenter mb-3" > DESEA ELIMINAR ESTE COLOR?</h2>
                 <Stack direction={'row'} spacing={2}>
                     <Box sx={{width:"100%"}}>
                         <p>Nombre: {RGB}</p>
@@ -64,11 +79,19 @@ class Info extends React.Component {
                             <div className="CustomLink">Regresar</div>
                         </Button>
                     </Link>
+                    
+                        <Button
+                            variant="outline-danger"
+                            className="M-6"
+                            onClick={this.handleClickEliminar}>Eliminar color</Button>
+                    
+
                 </Container>
             </div>
             </div>
         )
     }
+
 }
 
-export default withRouter(Info);
+export default withRouter(Eliminar);

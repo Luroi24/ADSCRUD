@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider'
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import { Link } from "react-router-dom";
+import { Link , withRouter} from "react-router-dom";
 import * as ml5 from "ml5";
 import data from '../dataset/colorData.json';
 
@@ -76,7 +76,7 @@ class Update extends React.Component {
             console.log("Entro" + response);
             alert("Se actualizo con exito");
         }).finally(() => {
-            window.location.href = "/Crud/";
+            this.props.history.push('/Crud/home');
         });
     }
 
@@ -227,4 +227,4 @@ class Update extends React.Component {
     }
 }
 
-export default Update;
+export default withRouter(Update);

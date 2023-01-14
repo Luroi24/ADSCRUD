@@ -5,10 +5,10 @@ import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider'
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import { Link } from "react-router-dom";
+import { Link , withRouter} from "react-router-dom";
 import * as ml5 from "ml5";
 import data from '../dataset/colorData.json';
-import Home from "./home"
+
 let nn;
 const options = {
     task: 'classification',
@@ -62,7 +62,7 @@ class Formulario extends React.Component {
             console.log("Entro" + response);
             alert("Creado con exito");
         }).finally(() => {
-            window.location.href = "/Crud/";
+            this.props.history.push('/Crud/home');
         });
     }
 
@@ -206,4 +206,4 @@ class Formulario extends React.Component {
     }
 }
 
-export default Formulario;
+export default withRouter(Formulario);

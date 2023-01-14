@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Container, Table, Alert } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
 import Pregunta from "./pregunta";
 import "../styles/crud.css"
@@ -19,6 +19,7 @@ class Home extends React.Component {
             this.setState({ data: response.data });
             console.log(response.data);
             console.log(this.state.data);
+            this.forceUpdate();
         }).catch(error => {
             console.info(error);
             this.setState({ showAlert: true, alertText: "ERROR EN LA OBTENCION DE DATOS" });
@@ -71,4 +72,4 @@ class Home extends React.Component {
 
 }
 
-export default Home;
+export default withRouter(Home);
