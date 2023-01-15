@@ -41,7 +41,7 @@ class Login extends React.Component {
                             <label class="form-label" for="User">Usuario</label>
                             <input placeholder="Ingrese el usuario" type="text" id="User" class="form-control" />
                           </div>
-                          <div class="form-group"><label class="form-label" for="password">Password</label>
+                          <div class="form-group"><label class="form-label" for="password">Contraseña</label>
                             <input placeholder="Ingrese su contraseña" type="password" id="password" class="form-control" />
                           </div>
                           <button className="boton" onClick={() => this.validar(document.getElementById("User").value,document.getElementById("password").value)}>

@@ -8,6 +8,9 @@ import Stack from '@mui/material/Stack';
 import { Link , withRouter} from "react-router-dom";
 import * as ml5 from "ml5";
 import data from '../dataset/colorData.json';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import "../styles/crud.css"
 
 let nn;
 const options = {
@@ -19,11 +22,67 @@ nn = ml5.neuralNetwork(options);
 class Formulario extends React.Component {
 
     state = {
+        data: [],
         valR: 0,
         valG: 0,
         valB: 0,
         prediccion: "Usa el boton Neural Network",
-        disabled: true
+        disabled: true,
+        idError: false,
+        helpTextId: "",
+        openSuccess:false,
+        openError:false,
+        openWarning:false,
+    }
+
+    componentDidMount() {
+        axios.get("http://localhost:8080/Crud/Preguntas").then(response => {
+            this.setState({ data: response.data });
+            console.log(this.state.data);
+            this.forceUpdate();
+        }).catch(error => {
+            console.info(error);
+        })
+    }
+
+    validar = (id, RGB, R, G, B, Pred) => {
+        if(document.getElementById("identificador").value == ""){
+            this.setState({idError:true,helpTextId:"Introduce un ID",openError:true})
+            return;
+        }
+        
+        if(this.state.disabled){
+            this.setState({openWarning:true});
+            return;
+        }else if(!this.state.idError){
+            axios.post(encodeURI(`http://localhost:8080/Crud/Create?id=${id}&RGB=${RGB}&R=${R}&G=${G}&B=${B}&Pred=${Pred}`)).then(response => {
+                console.info(response.data);
+                console.log("Entro" + response);
+                this.setState({openSuccess:true});
+            });
+        }else{
+            this.setState({openError:true});
+        }   
+    }
+
+    checkId = (event) => {
+        this.setState({idError:false,helpTextId:""});
+        console.log("estado inicial: " + this.state.idError);
+        const curId = event.target.value;
+        console.log("id a revisar: " + curId);
+        console.log("tipo: " + typeof curId)
+        if(curId == "") {
+            this.setState({idError:true,helpTextId:"Introduce un ID"});
+            return;
+        }
+        this.state.data.map(datos => {
+            if(datos.id == curId) {
+                console.log("Ya existe");
+                this.setState({idError: true,helpTextId:"Ya existe este ID"});
+                console.log("estado final: " + this.state.idError);
+                return;
+            }
+        });
     }
 
     handleChange = (event) => {
@@ -56,19 +115,8 @@ class Formulario extends React.Component {
         }
     }
 
-    validar = (id, RGB, R, G, B, Pred) => {
-        axios.post(encodeURI(`http://localhost:8080/Crud/Create?id=${id}&RGB=${RGB}&R=${R}&G=${G}&B=${B}&Pred=${Pred}`)).then(response => {
-            console.info(response.data);
-            console.log("Entro" + response);
-            alert("Creado con exito");
-        }).finally(() => {
-            this.props.history.push('/Crud/home');
-        });
-    }
-
     handleClick(event) {
         this.setState({prediccion:"Espera"});
-        // Step 4: add data to the neural network
         data.forEach(item => {
             const inputs = {
                 r: item.r,
@@ -113,6 +161,19 @@ class Formulario extends React.Component {
         }
     }
 
+    handleCloseSucc = () => {   
+        this.setState({openSuccess:false});
+        this.props.history.push('/Crud/home');
+    };
+
+    handleCloseErr = () => {   
+        this.setState({openError:false});
+    };
+
+    handleCloseWarning = () => {   
+        this.setState({openWarning:false});
+    };
+
     render() {
         const style = {
             backgroundColor: 'rgb(' + this.state.valR + ',' + this.state.valG + ',' + this.state.valB + ')',
@@ -130,7 +191,7 @@ class Formulario extends React.Component {
                     <Container className="MarginContainer container-tbl">
                         <h2 className="AlignCenter mb-3" > CREA TU COLOR </h2>
                         <Box component="form" sx={{ '& > :not(style)': { m: 1, width: "25ch" } }}>
-                            <TextField id="identificador" label="Id" variant="standard" type="number" />
+                            <TextField id="identificador" label="Id" variant="standard" type="number" onBlur={this.checkId} error={this.state.idError} helperText={this.state.helpTextId}/>
                             <TextField id="desc" label="Nombre" variant="standard" />
                             <TextField id="prediccion" label="Predicción" variant="standard" value={this.state.prediccion} disabled />
                         </Box>
@@ -187,7 +248,7 @@ class Formulario extends React.Component {
                         </div>
                         <Button variant="light" onClick={() =>
                             this.validar(document.getElementById("identificador").value, document.getElementById("desc").value, this.state.valR
-                                , this.state.valG, this.state.valB, this.state.prediccion)} disabled={(this.state.disabled)? "disabled" : ""}>
+                                , this.state.valG, this.state.valB, this.state.prediccion)}>
                             <div className="CustomLink">Añadir</div>
                         </Button>
                         <Link to="/Crud/home">
@@ -198,7 +259,27 @@ class Formulario extends React.Component {
                         <Button name="Listo" type="button" variant="light" onClick={this.handleClick.bind(this)}>
                             <div className="CustomLink">Neural Network</div>
                         </Button>
+                        <Snackbar name="openSuccess" open={this.state.openSuccess} autoHideDuration={3000} onClose={this.handleCloseSucc}>
+                            <MuiAlert name="openSuccess" onClose={this.handleCloseSucc} severity="success" sx={{ width: "100%" }} elevation={6} variant="filled">
+                                Se ha creado con éxito
+                            </MuiAlert>
+                        </Snackbar>
+                        <Snackbar name="openError" open={this.state.openError} autoHideDuration={3000} onClose={this.handleCloseErr}>
+                            <MuiAlert name="openError" onClose={this.handleCloseErr} severity="error" sx={{ width: "100%" }} elevation={6} variant="filled">
+                                Ha ocurrido un error: {this.state.helpTextId}
+                            </MuiAlert>
+                        </Snackbar>
+                        <Snackbar name="openWarning" open={this.state.openWarning} autoHideDuration={3000} onClose={this.handleCloseWarning}>
+                            <MuiAlert name="openWarning" onClose={this.handleCloseWarning} severity="warning" sx={{ width: "100%" }} elevation={6} variant="filled">
+                                Primero presiona el botón de "Neural Network" para obtener tu predicción
+                            </MuiAlert>
+                        </Snackbar>
                     </Container>
+                    <div className="creditos">
+                    <div className="creditosIn">
+                        5CM5 | Realizado por : Arteaga Hernández Angel Andrés * Ascencio Rangel Luis Eduardo * Guzman Cruz Andrés Miguel
+                    </div>
+                </div>
                 </div>
             </div>
         )

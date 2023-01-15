@@ -4,6 +4,7 @@ import { Link ,withRouter} from "react-router-dom";
 import axios from "axios";
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import "../styles/crud.css"
 
 class Info extends React.Component {
 
@@ -65,6 +66,11 @@ class Info extends React.Component {
                         </Button>
                     </Link>
                 </Container>
+                <div className="creditos">
+                    <div className="creditosIn">
+                        5CM5 | Realizado por : Arteaga Hernández Angel Andrés * Ascencio Rangel Luis Eduardo * Guzman Cruz Andrés Miguel
+                    </div>
+                </div>
             </div>
             </div>
         )

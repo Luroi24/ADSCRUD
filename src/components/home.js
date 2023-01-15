@@ -3,6 +3,10 @@ import { Button, Container, Table, Alert } from "react-bootstrap";
 import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
 import Pregunta from "./pregunta";
+import { confirmAlert } from 'react-confirm-alert';
+import "react-confirm-alert/src/react-confirm-alert.css";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 import "../styles/crud.css"
 
 class Home extends React.Component {
@@ -11,7 +15,8 @@ class Home extends React.Component {
         data: [],
         showAlert: false,
         alertText: "",
-        name:""
+        name:"",
+        openDelete: false,
     }
     
     componentDidMount() {
@@ -26,8 +31,52 @@ class Home extends React.Component {
         })
     }
 
+    handleEliminar = (uId) => {
+        //Eliminar
+        confirmAlert({
+            title: 'Confirmación',
+            message: '¿Estás seguro que quieres eliminar este color?',
+            buttons: [
+              {
+                label: 'Sí',
+                onClick: () =>{
+                    console.log(uId);
+                    axios.post(`http://localhost:8080/Crud/Eliminar?id=${uId}`).then(response => {
+                        console.info(response.data);
+                        axios.get("http://localhost:8080/Crud/Preguntas").then(res => {
+                            this.setState({ data: res.data });
+                            console.log(res.data);
+                            console.log("Nuevo array:" + this.state.data);
+                            this.setState({openDelete:true});
+                            this.forceUpdate();
+                        }).catch(error => {
+                            console.info(error);
+                            this.setState({ showAlert: true, alertText: "ERROR EN LA OBTENCION DE DATOS" });
+                        });
+                    }).catch(error => {
+                        console.info(error);
+                        alert(response.data.message);
+                    });
+                }
+              },
+              {
+                label: 'No'
+              }
+            ],
+            closeOnEscape: true,
+            closeOnClickOutside: true,
+          });
+    }
+    
+    handleClose = () => {   
+        this.setState({openDelete:false});
+    };
+
     render() {
         const { data, showAlert, alertText } = this.state;
+        const itemsPreguntas = data.map(pregunta => {
+            return <Pregunta {...pregunta} reloadNeeded={this.handleEliminar} key={pregunta}/>
+        })
         return (
             <div>
             <div className="container-title">
@@ -56,15 +105,23 @@ class Home extends React.Component {
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody key={this.state.data}>
                             {
-                                data.map(pregunta => {
-                                    return <Pregunta {...pregunta} />
-                                })
+                                itemsPreguntas
                             }
                         </tbody>
                     </Table>
+                    <Snackbar open={this.state.openDelete} autoHideDuration={3000} onClose={this.handleClose}>
+                        <MuiAlert onClose={this.handleClose} severity="success" sx={{ width: "100%" }} elevation={6} variant="filled">
+                            Se ha eliminado con éxito
+                        </MuiAlert>
+                    </Snackbar>
                 </Container>
+                <div className="creditos">
+                    <div className="creditosIn">
+                        5CM5 | Realizado por : Arteaga Hernández Angel Andrés * Ascencio Rangel Luis Eduardo * Guzman Cruz Andrés Miguel
+                    </div>
+                </div>
             </div>
             </div>
         )

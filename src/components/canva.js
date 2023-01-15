@@ -5,7 +5,7 @@ import axios from "axios";
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import CanvasDraw from "react-canvas-draw";
-
+import "../styles/crud.css"
 
 
 
@@ -87,6 +87,11 @@ class Canva extends React.Component {
                             </Button>
                         </Link>
                     </Container>
+                    <div className="creditos">
+                        <div className="creditosIn">
+                            5CM5 | Realizado por : Arteaga Hernández Angel Andrés * Ascencio Rangel Luis Eduardo * Guzman Cruz Andrés Miguel
+                        </div>
+                    </div>
                 </div>
             </div>
         )

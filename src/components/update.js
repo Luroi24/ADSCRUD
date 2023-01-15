@@ -8,6 +8,9 @@ import Stack from '@mui/material/Stack';
 import { Link , withRouter} from "react-router-dom";
 import * as ml5 from "ml5";
 import data from '../dataset/colorData.json';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import "../styles/crud.css"
 
 let nn;
 const options = {
@@ -26,7 +29,11 @@ class Update extends React.Component {
         PREDICTION: "",
         disabled: false,
         colorChange: false,
+        openSuccess:false,
+        openError:false,
+        openWarning: false,
     }
+
     handleChange = (event) => {
         const value = event.target.value;
         this.setState({
@@ -71,13 +78,15 @@ class Update extends React.Component {
     }
 
     validar = (curId, id, RGB, R, G, B, Pred) => {
-        axios.post(encodeURI(`http://localhost:8080/Crud/Update?curId=${curId}&id=${id}&RGB=${RGB}&R=${R}&G=${G}&B=${B}&Pred=${Pred}`)).then(response => {
-            console.info(response.data);
-            console.log("Entro" + response);
-            alert("Se actualizo con exito");
-        }).finally(() => {
-            this.props.history.push('/Crud/home');
-        });
+        if(this.state.disabled){
+            this.setState({openWarning:true});
+        }else{
+            axios.post(encodeURI(`http://localhost:8080/Crud/Update?curId=${curId}&id=${id}&RGB=${RGB}&R=${R}&G=${G}&B=${B}&Pred=${Pred}`)).then(response => {
+                console.info(response.data);
+                console.log("Entro" + response);
+                this.setState({openSuccess:true});
+            });
+        }
     }
 
     handleClick(event) {
@@ -129,6 +138,21 @@ class Update extends React.Component {
             this.setState({PREDICTION: resultado,disabled:false});
         }
     }
+
+    handleCloseSucc = () => {   
+        this.setState({openSuccess:false});
+        this.props.history.push('/Crud/home');
+    };
+
+    handleCloseErr = () => {   
+        this.setState({openError:false});
+    };
+
+    handleCloseWarning = () => {   
+        this.setState({openWarning:false});
+    };
+
+    
 
     render() {
         const qId = new URLSearchParams(window.location.search).get("id");
@@ -207,8 +231,7 @@ class Update extends React.Component {
                         </Container>
                         <Button variant="light" onClick={() =>
                             this.validar(qId, document.getElementById("identificador").value, document.getElementById("desc").value, this.state.R
-                            ,this.state.G, this.state.B,this.state.PREDICTION)}
-                            disabled={(this.state.disabled)? "disabled" : ""}>
+                            ,this.state.G, this.state.B,this.state.PREDICTION)}>
                             <div className="CustomLink">Modificar</div>
                         </Button>
                         <Link to="/Crud/home">
@@ -219,7 +242,27 @@ class Update extends React.Component {
                         <Button name="PREDICTION" type="button" variant="light" onClick={this.handleClick.bind(this)}>
                             <div className="CustomLink">Neural Network</div>
                         </Button>
+                        <Snackbar name="openSuccess" open={this.state.openSuccess} autoHideDuration={3000} onClose={this.handleCloseSucc}>
+                            <MuiAlert name="openSuccess" onClose={this.handleCloseSucc} severity="success" sx={{ width: "100%" }} elevation={6} variant="filled">
+                                Se ha modificado con éxito
+                            </MuiAlert>
+                        </Snackbar>
+                        <Snackbar name="openError" open={this.state.openError} autoHideDuration={3000} onClose={this.handleCloseErr}>
+                            <MuiAlert name="openError" onClose={this.handleCloseErr} severity="error" sx={{ width: "100%" }} elevation={6} variant="filled">
+                                Ha ocurrido un error
+                            </MuiAlert>
+                        </Snackbar>
+                        <Snackbar name="openWarning" open={this.state.openWarning} autoHideDuration={3000} onClose={this.handleCloseWarning}>
+                            <MuiAlert name="openWarning" onClose={this.handleCloseWarning} severity="warning" sx={{ width: "100%" }} elevation={6} variant="filled">
+                                Primero presiona el botón de "Neural Network" para obtener tu predicción
+                            </MuiAlert>
+                        </Snackbar>
                     </Container>
+                    <div className="creditos">
+                        <div className="creditosIn">
+                            5CM5 | Realizado por : Arteaga Hernández Angel Andrés * Ascencio Rangel Luis Eduardo * Guzman Cruz Andrés Miguel
+                        </div>
+                    </div>
                 </div>
             </div>
         )

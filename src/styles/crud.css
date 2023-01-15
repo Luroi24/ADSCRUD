@@ -1,4 +1,5 @@
 .container-prin{
+    position: relative;
     height: 100vh;
     width: 100%;
     padding: 15px;
@@ -98,4 +99,16 @@
 
 a .btn-outline-warning:hover{
     color: white;
+}
+
+.creditos{
+    position:absolute;
+    width: 100%;
+}
+
+.creditosIn{
+    position: relative;
+    text-align: center;
+    padding: 25px;
+    font-size: 0.8em;
 }
