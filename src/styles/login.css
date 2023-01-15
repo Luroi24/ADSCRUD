@@ -153,3 +153,16 @@ body{
         width: 90%;
     }
 }
+
+.creditos{
+    position:absolute;
+    width: 100%;
+}
+
+.creditosIn{
+    display: absolute;
+    bottom: 0;
+    text-align: center;
+    padding: 25px;
+    font-size: 0.8em;
+}

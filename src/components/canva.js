@@ -94,7 +94,7 @@ class Canva extends React.Component {
                     </Container>
                     <div className="creditos">
                         <div className="creditosIn">
-                            5CM5 | Realizado por : Arteaga Hernández Angel Andrés * Ascencio Rangel Luis Eduardo * Guzman Cruz Andrés Miguel
+                            5CM5 | Realizado por : Arteaga Hernández Angel Andrés - Ascencio Rangel Luis Eduardo - Guzman Cruz Andrés Miguel | 2023
                         </div>
                     </div>
                 </div>

@@ -37,6 +37,12 @@ Renderización del componente */
                     <div id="titulo">
                       <div className="center">
                         <div className="animated-text">Neural Network Color Classifier</div>
+                        <div className="creditos">
+                          <div className="creditosIn">
+                          <p>[ Arteaga Hernández Angel Andrés(2021630136) - Ascencio Rangel Luis Eduardo (2021630137) - Guzman Cruz Andrés Miguel (2021630317) ]</p>
+                          <p style={{fontWeight: 'bold'}}>5CM5 PF | 5CM52021630136IDPF</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     <div id="login" className="contenedor">
