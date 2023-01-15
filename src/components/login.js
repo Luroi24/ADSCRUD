@@ -1,3 +1,6 @@
+/*------------------------------------------------------------------------------
+Componente que muestra el login 
+--------------------------------------------------------------------------------*/
 import React from "react";
 import $ from "jquery"
 import Home from "./home"
@@ -9,7 +12,8 @@ class Login extends React.Component {
   state={
     val: 0,
   }
-
+/*------------------------------------------------------------------------------
+Validación de los datos del usuario. Se realiza una petición al servlet el cual hace una query a la base de datos. */
       validar=(usuario,password) =>{
         var datos={
             User: usuario,
@@ -26,6 +30,8 @@ class Login extends React.Component {
         })
      
     }
+/*------------------------------------------------------------------------------
+Renderización del componente */
     render() {
       const undiv= <div className="d-grid" id="equis">
                     <div id="titulo">
@@ -51,6 +57,7 @@ class Login extends React.Component {
                     </div>
                     </div>
             </div>
+//    Dependiendo del valor del estado "val" se cargará un componente u otro. 
       const esValido = (this.state.val=='2')?<UserError></UserError>: (this.state.val=='1') ?<Home></Home>:undiv;
         return(
           <div>

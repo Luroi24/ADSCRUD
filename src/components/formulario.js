@@ -1,3 +1,6 @@
+/*------------------------------------------------------------------------------
+Componente para agregar un nuevo color
+--------------------------------------------------------------------------------*/
 import axios from "axios";
 import React from "react";
 import { Button, Container } from "react-bootstrap";
@@ -34,7 +37,9 @@ class Formulario extends React.Component {
         openError:false,
         openWarning:false,
     }
-
+/*------------------------------------------------------------------------------
+    Se ejectua cada vez que se monta este componente. Se obitenen los datos que contiene la base de datos para poder hacer la validación del id.
+*/
     componentDidMount() {
         axios.get("http://localhost:8080/Crud/Preguntas").then(response => {
             this.setState({ data: response.data });
@@ -44,13 +49,15 @@ class Formulario extends React.Component {
             console.info(error);
         })
     }
-
+/*------------------------------------------------------------------------------
+    Se realiza la validación del ID y se comprueba que se tenga una predicción brindada por la red neuronal. Si todo está en orden, entonces se agrega el color a la base de datos.
+*/
     validar = (id, RGB, R, G, B, Pred) => {
         if(document.getElementById("identificador").value == ""){
             this.setState({idError:true,helpTextId:"Introduce un ID",openError:true})
             return;
         }
-        
+
         if(this.state.disabled){
             this.setState({openWarning:true});
             return;
@@ -64,13 +71,12 @@ class Formulario extends React.Component {
             this.setState({openError:true});
         }   
     }
-
+/*------------------------------------------------------------------------------
+    Se evaluan los distitnos posibles estados del input del id. Si se introduce un id existente, entonces se activa el error
+*/
     checkId = (event) => {
         this.setState({idError:false,helpTextId:""});
-        console.log("estado inicial: " + this.state.idError);
         const curId = event.target.value;
-        console.log("id a revisar: " + curId);
-        console.log("tipo: " + typeof curId)
         if(curId == "") {
             this.setState({idError:true,helpTextId:"Introduce un ID"});
             return;
@@ -79,12 +85,15 @@ class Formulario extends React.Component {
             if(datos.id == curId) {
                 console.log("Ya existe");
                 this.setState({idError: true,helpTextId:"Ya existe este ID"});
-                console.log("estado final: " + this.state.idError);
                 return;
             }
         });
     }
-
+/*------------------------------------------------------------------------------
+    Sección de handles. Sirven para realizar una acción tras un evento ocurrido.
+    
+    Handle change permite ver reflejados los cambios en las barras deslizadoras así como evaluar el color en la red neuronal entrenada.
+*/
     handleChange = (event) => {
         const value = event.target.value;
         this.setState({
@@ -115,6 +124,9 @@ class Formulario extends React.Component {
         }
     }
 
+/*------------------------------------------------------------------------------
+    handleClick permite entrenar la red neuronal. Es necesario ejecutar el entrenamiento cada vez que se quiera añadir un color
+*/
     handleClick(event) {
         this.setState({prediccion:"Espera"});
         data.forEach(item => {
@@ -129,16 +141,16 @@ class Formulario extends React.Component {
 
             nn.addData(inputs, output);
         });
-        // Step 5: normalize your data;
+        
         nn.normalizeData();
-        // Step 6: train your neural network
+        
         const trainingOptions = {
             epochs: 20,
             batchSize: 64
         }
         nn.train(trainingOptions, classify.bind(this));
         //------------------------------------------------------
-       // Step 8: make a classification
+       
        const input = {
             r: +this.state.valR,
             g: +this.state.valG,
@@ -148,7 +160,7 @@ class Formulario extends React.Component {
         console.log(input.g);
         console.log(input.b);
         function classify() { nn.classify(input, handleResults.bind(this)); }
-        // Step 9: define a function to handle the results of your classification
+
         function handleResults(error, result) {
             if (error) {
                 console.error(error);
@@ -160,7 +172,9 @@ class Formulario extends React.Component {
             this.setState({prediccion: resultado,disabled:false});
         }
     }
-
+/*------------------------------------------------------------------------------
+    Handles para cerrar las alertas de éxito, error o aviso.
+*/
     handleCloseSucc = () => {   
         this.setState({openSuccess:false});
         this.props.history.push('/Crud/home');
@@ -181,7 +195,9 @@ class Formulario extends React.Component {
             height: '50px',
             width: '100%',
         };
-
+/*------------------------------------------------------------------------------
+    Renderización del componente. Contiene las entradas necesarias para agregar un color.
+*/
         return (
             <div>
                 <div className="container-title">

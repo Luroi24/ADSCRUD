@@ -1,3 +1,6 @@
+/*------------------------------------------------------------------------------
+Componente que se muestra a los usuarios no registrados 
+--------------------------------------------------------------------------------*/
 import React from "react";
 import '../styles/login.css'
 
@@ -5,6 +8,8 @@ class UserError extends React.Component {
     handleRefresh = () => {
         window.location.reload(false);
     }
+/*------------------------------------------------------------------------------
+Renderización del componente */
     render() {
         
         return(<div className="contenedorErr">

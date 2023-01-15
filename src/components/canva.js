@@ -1,3 +1,6 @@
+/*------------------------------------------------------------------------------
+Componente para probar el color. Permite dibujar sobre una pizarra usando el color seleccionado
+--------------------------------------------------------------------------------*/
 import React from "react";
 import { Button, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -6,8 +9,6 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import CanvasDraw from "react-canvas-draw";
 import "../styles/crud.css"
-
-
 
 class Canva extends React.Component {
 
@@ -19,7 +20,9 @@ class Canva extends React.Component {
         B: "",
         PREDICTION: ""
     }
-
+/*------------------------------------------------------------------------------
+    Se ejectua cada vez que se monta este componente. Se obitenen los datos que coinciden con el id del color seleccionado para poder utilizar el color en el pincel de la pizarra.
+*/
     componentDidMount() {
         const qId = new URLSearchParams(window.location.search).get("id");
         console.log(qId);
@@ -33,7 +36,9 @@ class Canva extends React.Component {
             alert(response.data.message);
         });
     }
-
+/*------------------------------------------------------------------------------
+    Renderización del componente. Se muestran los datos del color y permite al usuario dibujar sobre una pizarra usando el color seleccionado en el CRUD.
+*/
     render() {
         const { RGB, R, G, B, PREDICTION } = this.state;
 

@@ -1,3 +1,6 @@
+/*------------------------------------------------------------------------------
+Componente para ver el color seleccionado
+--------------------------------------------------------------------------------*/
 import React from "react";
 import { Button, Container } from "react-bootstrap";
 import { Link ,withRouter} from "react-router-dom";
@@ -17,6 +20,10 @@ class Info extends React.Component {
         PREDICTION: ""
     }
 
+/*------------------------------------------------------------------------------
+    Se ejectua cada vez que se monta este componente. Se obitenen los datos que coincidan con el id del color seleccionado
+*/
+
     componentDidMount() {
         const qId = new URLSearchParams(window.location.search).get("id");
         console.log(qId);
@@ -30,6 +37,10 @@ class Info extends React.Component {
             alert(response.data.message);
              });
     }
+
+/*------------------------------------------------------------------------------
+    Renderización del componente. Se muestran los datos del color pero no se tiene la capacidad de modificarlos
+*/
 
     render() {
         const { RGB,R,G,B,PREDICTION } = this.state;

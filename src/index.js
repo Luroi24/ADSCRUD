@@ -1,3 +1,6 @@
+/*------------------------------------------------------------------------------
+Redireccionamiento hacia cada uno de los componentes según el URL que se tenga. 
+--------------------------------------------------------------------------------*/
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 import Home from "./components/home";
@@ -8,6 +11,7 @@ import Formulario from "./components/formulario";
 import Update from "./components/update";
 import Canva from "./components/canva";
 import Login from "./components/login"
+
 const App = () => {
     return (
         <div>

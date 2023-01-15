@@ -1,3 +1,6 @@
+/*------------------------------------------------------------------------------
+Componente para modificar el color seleccionado
+--------------------------------------------------------------------------------*/
 import axios from "axios";
 import React from "react";
 import { Button, Container } from "react-bootstrap";
@@ -19,6 +22,8 @@ const options = {
 }
 nn = ml5.neuralNetwork(options);
 
+
+
 class Update extends React.Component {
     state = {
         id: "",
@@ -33,7 +38,40 @@ class Update extends React.Component {
         openError:false,
         openWarning: false,
     }
-
+/*------------------------------------------------------------------------------
+    Se ejectua cada vez que se monta este componente. Se obitenen los datos que coinciden con el id del color seleccionado para poder pre cargarlos
+*/
+    componentDidMount() {
+        const qId = new URLSearchParams(window.location.search).get("id");
+        axios.post(`http://localhost:8080/Crud/Mostrar?id=${qId}`).then(response => {
+            const question = response.data[0];
+            console.info(response.data);
+            this.setState({ ...question });
+            this.state.PREDICTION = decodeURI(this.state.PREDICTION);
+        }).catch(error => {
+            console.info(error);
+            alert(response.data.message);
+        });
+    }
+/*------------------------------------------------------------------------------
+    Se realiza la validación de que se tenga una predicción brindada por la red neuronal. Si todo está en orden, entonces se modifica el color en la base de datos.
+*/
+    validar = (curId, id, RGB, R, G, B, Pred) => {
+        if(this.state.disabled){
+            this.setState({openWarning:true});
+        }else{
+            axios.post(encodeURI(`http://localhost:8080/Crud/Update?curId=${curId}&id=${id}&RGB=${RGB}&R=${R}&G=${G}&B=${B}&Pred=${Pred}`)).then(response => {
+                console.info(response.data);
+                console.log("Entro" + response);
+                this.setState({openSuccess:true});
+            });
+        }
+    }
+/*------------------------------------------------------------------------------
+    Sección de handles. Sirven para realizar una acción tras un evento ocurrido.
+    
+    Handle change permite ver reflejados los cambios en las barras deslizadoras así como evaluar el color en la red neuronal entrenada. También se verifica si se ha alterado alguna de las barras deslizadoras para solicitar al usuario que entrene a la red neuronal
+*/
     handleChange = (event) => {
         const value = event.target.value;
         this.setState({
@@ -63,36 +101,13 @@ class Update extends React.Component {
             this.setState({PREDICTION: resultado});
         }
     }
-
-    componentDidMount() {
-        const qId = new URLSearchParams(window.location.search).get("id");
-        axios.post(`http://localhost:8080/Crud/Mostrar?id=${qId}`).then(response => {
-            const question = response.data[0];
-            console.info(response.data);
-            this.setState({ ...question });
-            this.state.PREDICTION = decodeURI(this.state.PREDICTION);
-        }).catch(error => {
-            console.info(error);
-            alert(response.data.message);
-        });
-    }
-
-    validar = (curId, id, RGB, R, G, B, Pred) => {
-        if(this.state.disabled){
-            this.setState({openWarning:true});
-        }else{
-            axios.post(encodeURI(`http://localhost:8080/Crud/Update?curId=${curId}&id=${id}&RGB=${RGB}&R=${R}&G=${G}&B=${B}&Pred=${Pred}`)).then(response => {
-                console.info(response.data);
-                console.log("Entro" + response);
-                this.setState({openSuccess:true});
-            });
-        }
-    }
+/*------------------------------------------------------------------------------
+    handleClick permite entrenar la red neuronal. Es necesario ejecutar el entrenamiento tras cambiar el valor de alguna barra deslizadora.
+*/
 
     handleClick(event) {
         this.setState({PREDICTION:"Espera"});
 
-        // Step 4: add data to the neural network
         data.forEach(item => {
             const inputs = {
                 r: item.r,
@@ -106,17 +121,14 @@ class Update extends React.Component {
             nn.addData(inputs, output);
         });
 
-        // Step 5: normalize your data;
         nn.normalizeData();
 
-        // Step 6: train your neural network
         const trainingOptions = {
             epochs: 20,
             batchSize: 64
         }
         nn.train(trainingOptions, classify.bind(this));
         //------------------------------------------------------
-        // Step 8: make a classification
         const input = {
             r: +this.state.R,
             g: +this.state.G,
@@ -126,19 +138,21 @@ class Update extends React.Component {
         console.log(input.g);
         console.log(input.b);
         function classify() { nn.classify(input, handleResults.bind(this)); }
-        // Step 9: define a function to handle the results of your classification
+
         function handleResults(error, result) {
             if (error) {
                 console.error(error);
                 return;
             }
-            console.log(result); // {label: 'red', confidence: 0.8};
+            console.log(result);
             console.log(`Color: ${result[0].label}, Seguridad de predicción: ${result[0].confidence.toFixed(2) * 100} por ciento`);
             const resultado = `${result[0].confidence.toFixed(2) * 100}% ${result[0].label}`;
             this.setState({PREDICTION: resultado,disabled:false});
         }
     }
-
+/*------------------------------------------------------------------------------
+    Handles para cerrar las alertas de éxito, error o aviso.
+*/
     handleCloseSucc = () => {   
         this.setState({openSuccess:false});
         this.props.history.push('/Crud/home');
@@ -152,7 +166,9 @@ class Update extends React.Component {
         this.setState({openWarning:false});
     };
 
-    
+/*------------------------------------------------------------------------------
+    Renderización del componente. Contiene las entradas necesarias para modificar al color.
+*/
 
     render() {
         const qId = new URLSearchParams(window.location.search).get("id");

@@ -1,9 +1,15 @@
+/*------------------------------------------------------------------------------
+Componente que carga cada uno de los datos como filas de la tabla
+--------------------------------------------------------------------------------*/
 import React from "react";
 import { Button } from "react-bootstrap";
 import { Link ,withRouter} from "react-router-dom";
 
 
 class Pregunta extends React.Component {
+/*------------------------------------------------------------------------------    
+    Constructor para facilitar el envio y recibimiento de parámetros externos.
+*/
     constructor(props) {
 
         super(props);
@@ -12,11 +18,15 @@ class Pregunta extends React.Component {
             RGB: this.props.RGB,
         }
     }
-
+/*------------------------------------------------------------------------------   
+    El botón eliminar ha sido presionado, se envía al padre para poder manipular al evento. 
+*/
     handleClickEliminar = () => {
         this.props.reloadNeeded(this.state.id);
     }
-
+/*------------------------------------------------------------------------------
+    Renderización del componente. Aquí se carga cada uno de los datos obtenidos por el padre para mostrarlos en la tabla.
+*/
     render() {
         
         const { id, RGB } = this.state;
